@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.gson.*
+import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import org.jetbrains.exposed.sql.Database
@@ -13,8 +14,12 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import pl.psplus.model.exposed.GameAvailability
 import pl.psplus.model.exposed.Trophy
 import pl.psplus.model.exposed.Game
-import pl.psplus.plugins.configureRouting
+import pl.psplus.service.GameService
+import pl.psplus.web.game
+import pl.psplus.web.gameList
 import java.util.*
+
+val gameService = GameService()
 
 fun initDB() {
     val config = HikariConfig("./hikari.properties")
@@ -31,6 +36,9 @@ fun main() {
         install(ContentNegotiation) {
             gson()
         }
-        configureRouting()
+        install(Routing) {
+            game(gameService)
+            gameList(gameService)
+        }
     }.start(wait = true)
 }
