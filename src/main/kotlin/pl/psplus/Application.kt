@@ -17,6 +17,7 @@ import pl.psplus.model.exposed.Game
 import pl.psplus.service.GameService
 import pl.psplus.web.game
 import pl.psplus.web.gameList
+import pl.psplus.web.gameSearch
 import java.util.*
 
 val gameService = GameService()
@@ -39,6 +40,7 @@ fun main() {
         install(Routing) {
             game(gameService)
             gameList(gameService)
+            gameSearch(gameService)
         }
     }.start(wait = true)
 }

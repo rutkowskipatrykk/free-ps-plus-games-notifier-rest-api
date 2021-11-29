@@ -5,5 +5,7 @@ data class GameListItem(
     val name: String,
     val platforms: String?,
     val rating: Double?,
-    val cover: String?
+    val cover: String?,
+    val startDay: Long? = null,
+    val endDate: Long? = null
 )

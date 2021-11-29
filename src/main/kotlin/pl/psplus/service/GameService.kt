@@ -33,4 +33,28 @@ class GameService {
         }
     }
 
+    suspend fun getGameByName(gameName: String) = newSuspendedTransaction {
+        (GameAvailability innerJoin Game).slice(
+            Game.id,
+            Game.name,
+            Game.platforms,
+            Game.rating,
+            Game.cover,
+            GameAvailability.startDate,
+            GameAvailability.endDate
+        ).select {
+            Game.name like "%$gameName%"
+        }.orderBy(GameAvailability.startDate).map {
+            GameListItem(
+                it[Game.id],
+                it[Game.name],
+                it[Game.platforms],
+                it[Game.rating],
+                it[Game.cover],
+                it[GameAvailability.startDate],
+                it[GameAvailability.endDate]
+            )
+        }
+    }
+
 }
